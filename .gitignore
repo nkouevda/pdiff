@@ -1,0 +1,3 @@
+# Python
+*.py[co]
+__pycache__
