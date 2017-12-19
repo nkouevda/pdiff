@@ -58,9 +58,8 @@ def format_half_line(half_line, half_width):
     visible_len = 0
     last_color = _COLOR_RESET
 
-    # We can't simply wrap `half_line` every `half_width` chars due to color
-    # codes, so we iterate over `parts` and assemble `half_lines`, manually
-    # keeping track of `visible_len`
+    # We can't simply wrap `half_line` at every `half_width` chars due to color
+    # codes, so we manually assemble `half_lines` from `parts`
     for part in parts:
       if part.startswith('\x1b'):
         half_lines[-1] += part
@@ -69,10 +68,13 @@ def format_half_line(half_line, half_width):
         half_lines[-1] += part
         visible_len += len(part)
       else:
-        remaining_len = half_width - visible_len
-        half_lines[-1] += part[:remaining_len] + _COLOR_RESET
-        half_lines.append(last_color + part[remaining_len:])
-        visible_len = len(part[remaining_len:])
+        first_offset = half_width - visible_len
+        half_lines[-1] += part[:first_offset] + _COLOR_RESET
+
+        for offset in range(first_offset, len(part), half_width):
+          wrapped_half_line = part[offset:offset + half_width]
+          half_lines.append(last_color + wrapped_half_line + _COLOR_RESET)
+          visible_len = len(wrapped_half_line)
 
   # Always right pad the last half line
   pad_len = half_width - visible_len
@@ -151,7 +153,7 @@ def format_hunk(hunk, width, tab_size, signs):
 
 
 def pdiff(old_filename, new_filename, context, width, tab_size, signs):
-  # `readlines` because `difflib._mdiff()` can't operate on a generator
+  # `readlines` because `difflib._mdiff` can't operate on a generator
   with open(old_filename, 'r') as old_file:
     old_lines = old_file.readlines()
 
