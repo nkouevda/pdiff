@@ -13,6 +13,7 @@ setup(
     version=version['__version__'],
     description='Pretty side-by-side diff',
     long_description=readme,
+    long_description_content_type='text/markdown',
     url='https://github.com/nkouevda/pdiff',
     author='Nikita Kouevda',
     author_email='nkouevda@gmail.com',
