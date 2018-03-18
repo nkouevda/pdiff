@@ -192,6 +192,7 @@ def main():
       action='version',
       version='%(prog)s ' + __version__)
   parser.add_argument(
+      '-t',
       '--expand-tabs',
       dest='tab_size',
       type=int,
@@ -199,6 +200,7 @@ def main():
       help='expand tabs to %(metavar)s spaces; default: %(default)s',
       metavar='<n>')
   parser.add_argument(
+      '-S',
       '--signs',
       action=argparse_extensions.NegatableStoreTrueAction,
       default=True,
@@ -212,6 +214,7 @@ def main():
       help='show %(metavar)s lines of context; default: %(default)s',
       metavar='<n>')
   parser.add_argument(
+      '-W',
       '--width',
       type=int,
       default=None,

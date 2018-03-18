@@ -19,11 +19,13 @@ Pretty side-by-side diff
 optional arguments:
   -h, --help            show this help message and exit
   -v, --version         show program's version number and exit
-  --expand-tabs <n>     expand tabs to <n> spaces; default: 8
-  --signs, --no-signs   show sign columns; default: True
+  -t <n>, --expand-tabs <n>
+                        expand tabs to <n> spaces; default: 8
+  -S, --signs, --no-signs
+                        show sign columns; default: True
   -U <n>, --unified <n>
                         show <n> lines of context; default: 3
-  --width <n>           fit output to <n> columns; default: autodetect
+  -W <n>, --width <n>   fit output to <n> columns; default: autodetect
 ```
 
 ### Git
