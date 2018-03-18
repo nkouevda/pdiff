@@ -41,4 +41,4 @@ Configure a `pdiff` `difftool`, and add some aliases to your liking, e.g.:
 
 ## License
 
-Licensed under the [MIT License](https://opensource.org/licenses/MIT).
+[MIT License](LICENSE.txt)
