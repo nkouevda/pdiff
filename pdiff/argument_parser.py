@@ -58,7 +58,8 @@ def get_parser():
       metavar='<n>')
   parser.add_argument(
       '-L',
-      '--lines',
+      '--line-numbers',
+      dest='line_numbers',
       action=argparse_extensions.NegatableStoreTrueAction,
       help='displays line numbers in diff; default: %(default)s',
       default=False)
