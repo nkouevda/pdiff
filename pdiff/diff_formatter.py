@@ -14,13 +14,14 @@ class DiffFormatter(object):
   NEW_HUNK_HEADER_TEMPLATE = '@@ +%d,%d @@'
 
   def __init__(
-      self, old_filename, new_filename, context, width, tab_size, signs):
+      self, old_filename, new_filename, context, width, tab_size, signs, lines):
     self.old_filename = old_filename
     self.new_filename = new_filename
     self.context = context
     self.width = width
     self.tab_size = tab_size
     self.signs = signs
+    self.lines = lines
 
     self.half_width = self.width // 2 - 1
     self.empty_half = ' ' * self.half_width
@@ -82,10 +83,14 @@ class DiffFormatter(object):
           old_half = self._highlight_whitespace(old_half)
           new_half = self._highlight_whitespace(new_half)
 
-      if self.signs:
+      if self.signs and self.lines:
         old_sign, new_sign = self._format_signs(old_half, new_half, has_changes)
         old_half = str(old_num) + " " + old_sign + " " + old_half
         new_half = str(new_num) + " " + new_sign + " " + new_half
+      elif self.signs:
+        old_sign, new_sign = self._format_signs(old_half, new_half, has_changes)
+        old_half = old_sign + " " + old_half
+        new_half =  new_sign + " " + new_half
 
       yield self._format_line(old_half, new_half)
 
