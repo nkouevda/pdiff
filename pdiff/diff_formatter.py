@@ -84,8 +84,8 @@ class DiffFormatter(object):
 
       if self.signs:
         old_sign, new_sign = self._format_signs(old_half, new_half, has_changes)
-        old_half = old_sign + old_half
-        new_half = new_sign + new_half
+        old_half = str(old_num) + " " + old_sign + " " + old_half
+        new_half = str(new_num) + " " + new_sign + " " + new_half
 
       yield self._format_line(old_half, new_half)
 
