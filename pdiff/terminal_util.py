@@ -23,6 +23,5 @@ def get_terminal_size():
 
 
 def _get_terminal_size(fd):
-  lines, columns = struct.unpack(
-      'hh', fcntl.ioctl(fd, termios.TIOCGWINSZ, '\x00\x00\x00\x00'))
+  lines, columns = struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ, '\x00\x00\x00\x00'))
   return terminal_size(columns=columns, lines=lines)
