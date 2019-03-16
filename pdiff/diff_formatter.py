@@ -13,14 +13,14 @@ class DiffFormatter(object):
   OLD_HUNK_HEADER_TEMPLATE = '@@ -%d,%d @@'
   NEW_HUNK_HEADER_TEMPLATE = '@@ +%d,%d @@'
 
-  def __init__(
-      self, old_filename, new_filename, context, width, tab_size, signs):
+  def __init__(self, old_filename, new_filename, context, width, tab_size, signs, line_numbers):
     self.old_filename = old_filename
     self.new_filename = new_filename
     self.context = context
     self.width = width
     self.tab_size = tab_size
     self.signs = signs
+    self.line_numbers = line_numbers
 
     self.half_width = self.width // 2 - 1
     self.empty_half = ' ' * self.half_width
@@ -87,6 +87,10 @@ class DiffFormatter(object):
         old_half = old_sign + old_half
         new_half = new_sign + new_half
 
+      if self.line_numbers:
+        old_half = str(old_num).rjust(4) + ' ' + old_half
+        new_half = str(new_num).rjust(4) + ' ' + new_half
+
       yield self._format_line(old_half, new_half)
 
   def _format_hunk_header(self, hunk):
@@ -122,14 +126,13 @@ class DiffFormatter(object):
 
     return '\n'.join(
         old_half + ' ' + new_half
-        for old_half, new_half in six.moves.zip_longest(
-            old_half_lines, new_half_lines, fillvalue=self.empty_half)) + '\n'
+        for old_half, new_half in six.moves.zip_longest(old_half_lines, new_half_lines,
+            fillvalue=self.empty_half)) + '\n'
 
   def _format_half_lines(self, half_line):
     # Split `'ab\x1b[31mcd\x1b[0m'` into `['ab', '\x1b[31m', 'cd', '\x1b[0m']`
     parts = re.split('(\x1b\\[(?:0|[34][0-7])m)', half_line)
-    visible_len = sum(
-        len(part) for part in parts if not part.startswith('\x1b'))
+    visible_len = sum(len(part) for part in parts if not part.startswith('\x1b'))
 
     if visible_len <= self.half_width:
       half_lines = [half_line]

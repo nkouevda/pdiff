@@ -23,7 +23,8 @@ def main():
       args.context,
       args.width,
       args.tab_size,
-      args.signs)
+      args.signs,
+      args.line_numbers)
 
   for line in formatter.get_lines():
     sys.stdout.write(line)

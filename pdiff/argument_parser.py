@@ -10,7 +10,14 @@ def get_parser():
   parser = argparse.ArgumentParser(
       usage='%(prog)s [<options>] [--] <old file> <new file>',
       description='Pretty side-by-side diff')
-
+  
+  parser.add_argument(
+      '-L',
+      '--line-numbers',
+      dest='line_numbers',
+      action=argparse_extensions.NegatableStoreTrueAction,
+      help='show line number columns; default: %(default)s',
+      default=False)
   parser.add_argument(
       'old_filename',
       type=str,
