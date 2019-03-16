@@ -126,8 +126,8 @@ class DiffFormatter(object):
 
     return '\n'.join(
         old_half + ' ' + new_half
-        for old_half, new_half in six.moves.zip_longest(old_half_lines, new_half_lines,
-            fillvalue=self.empty_half)) + '\n'
+        for old_half, new_half in six.moves.zip_longest(
+            old_half_lines, new_half_lines, fillvalue=self.empty_half)) + '\n'
 
   def _format_half_lines(self, half_line):
     # Split `'ab\x1b[31mcd\x1b[0m'` into `['ab', '\x1b[31m', 'cd', '\x1b[0m']`

@@ -18,6 +18,8 @@ Pretty side-by-side diff
 
 optional arguments:
   -h, --help            show this help message and exit
+  -L, --line-numbers, --no-line-numbers
+                        show line number columns; default: False
   -t <n>, --expand-tabs <n>
                         expand tabs to <n> spaces; default: 8
   -S, --signs, --no-signs
@@ -26,8 +28,6 @@ optional arguments:
                         show <n> lines of context; default: 3
   -v, --version         show program's version number and exit
   -W <n>, --width <n>   fit output to <n> columns; default: autodetect
-  -L, --line-numbers, --no-line-numbers
-                        displays line numbers in diff; default: False
 ```
 
 ### Git
