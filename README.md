@@ -2,8 +2,12 @@
 
 Pretty side-by-side diff.
 
-Inspired by [`cdiff`](https://github.com/ymattw/cdiff) and
+Inspired by [`ydiff`](https://github.com/ymattw/ydiff) and
 [`icdiff`](https://github.com/jeffkaufman/icdiff).
+
+## Example
+
+![pdiff.png](https://github.com/nkouevda/images/raw/master/pdiff.png)
 
 ## Installation
 
