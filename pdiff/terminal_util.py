@@ -1,8 +1,5 @@
 import collections
-import fcntl
 import os
-import struct
-import termios
 
 terminal_size = collections.namedtuple('terminal_size', ('columns', 'lines'))
 
@@ -23,5 +20,9 @@ def get_terminal_size():
 
 
 def _get_terminal_size(fd):
+  import fcntl
+  import struct
+  import termios
+
   lines, columns = struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ, '\x00\x00\x00\x00'))
   return terminal_size(columns=columns, lines=lines)
