@@ -13,6 +13,10 @@ Inspired by [`ydiff`](https://github.com/ymattw/ydiff) and
 
     pip install pdiff
 
+Or:
+  
+    brew install nkouevda/nkouevda/pdiff
+
 ## Usage
 
 ```
