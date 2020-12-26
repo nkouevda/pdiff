@@ -1,3 +1,2 @@
 argparse-extensions==1.0.3
 colorama==0.4.1
-six==1.12.0

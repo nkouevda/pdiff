@@ -1,7 +1,6 @@
 import difflib
+import itertools
 import re
-
-import six
 
 from . import colors
 
@@ -126,7 +125,7 @@ class DiffFormatter(object):
 
     return '\n'.join(
         old_half + ' ' + new_half
-        for old_half, new_half in six.moves.zip_longest(
+        for old_half, new_half in itertools.zip_longest(
             old_half_lines, new_half_lines, fillvalue=self.empty_half)) + '\n'
 
   def _format_half_lines(self, half_line):

@@ -22,7 +22,6 @@ setup(
     install_requires=[
         'argparse-extensions',
         'colorama',
-        'six',
     ],
     entry_points={
         'console_scripts': [
