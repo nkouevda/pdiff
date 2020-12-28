@@ -1,7 +1,5 @@
 import argparse
 
-import argparse_extensions
-
 from . import __version__
 from . import terminal_util
 
@@ -26,30 +24,30 @@ def get_parser():
       '-L',
       '--line-numbers',
       dest='line_numbers',
-      action=argparse_extensions.NegatableStoreTrueAction,
-      help='show line number columns; default: %(default)s',
-      default=False)
+      action=argparse.BooleanOptionalAction,
+      default=False,
+      help='show line number columns')
   parser.add_argument(
       '-t',
       '--expand-tabs',
       dest='tab_size',
       type=int,
       default=8,
-      help='expand tabs to %(metavar)s spaces; default: %(default)s',
+      help='expand tabs to %(metavar)s spaces (default: %(default)s)',
       metavar='<n>')
   parser.add_argument(
       '-S',
       '--signs',
-      action=argparse_extensions.NegatableStoreTrueAction,
+      action=argparse.BooleanOptionalAction,
       default=True,
-      help='show sign columns; default: %(default)s')
+      help='show sign columns')
   parser.add_argument(
       '-U',
       '--unified',
       dest='context',
       type=int,
       default=3,
-      help='show %(metavar)s lines of context; default: %(default)s',
+      help='show %(metavar)s lines of context (default: %(default)s)',
       metavar='<n>')
   parser.add_argument(
       '-v',
@@ -61,7 +59,7 @@ def get_parser():
       '--width',
       type=int,
       default=terminal_util.get_terminal_size().columns,
-      help='fit output to %(metavar)s columns; default: autodetect',
+      help='fit output to %(metavar)s columns (default: autodetect)',
       metavar='<n>')
 
   return parser

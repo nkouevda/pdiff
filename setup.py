@@ -20,7 +20,6 @@ setup(
     license='MIT',
     packages=['pdiff'],
     install_requires=[
-        'argparse-extensions',
         'colorama',
     ],
     entry_points={
