@@ -46,8 +46,8 @@ optional arguments:
 Configure a `pdiff` `difftool`, and add some aliases to your liking, e.g.:
 
 ```
-[difftool.pdiff]
-	cmd = "pdiff -- \"$LOCAL\" \"$REMOTE\" | less -R"
+[difftool "pdiff"]
+	cmd = "pdiff -- \"$LOCAL\" \"$REMOTE\" | less --Raw-control-chars"
 
 [alias]
 	dfp = difftool --tool=pdiff
