@@ -34,13 +34,18 @@ class DiffFormatter(object):
 
     yield self._format_file_header()
 
+    # Determine line number column widths; note: in some cases this is
+    # unnecessarily wide (e.g. if changes only in beginning of a long file)
+    old_ln_width = len(str(len(old_lines)))
+    new_ln_width = len(str(len(new_lines)))
+
     mdiff = difflib._mdiff(old_lines, new_lines, context=self.context)
 
     # `mdiff` context separators don't have the metadata necessary to generate
     # git-diff-like hunk headers (`@@ -%d,%d @@` and `@@ +%d,%d @@`), so we
     # partition `mdiff` into hunks and process each one separately
     for hunk in self._get_hunks(mdiff):
-      for line in self._format_hunk(hunk):
+      for line in self._format_hunk(hunk, old_ln_width, new_ln_width):
         yield line
 
   def _format_file_header(self):
@@ -65,7 +70,7 @@ class DiffFormatter(object):
     if hunk:
       yield hunk
 
-  def _format_hunk(self, hunk):
+  def _format_hunk(self, hunk, old_ln_width, new_ln_width):
     yield self._format_hunk_header(hunk)
 
     for (old_num, old_half), (new_num, new_half), has_changes in hunk:
@@ -81,16 +86,13 @@ class DiffFormatter(object):
           old_half = self._highlight_whitespace(old_half)
           new_half = self._highlight_whitespace(new_half)
 
-      if self.signs:
-        old_sign, new_sign = self._format_signs(old_half, new_half, has_changes)
-        old_half = old_sign + old_half
-        new_half = new_sign + new_half
+      old_sign, new_sign = self._format_signs(old_half, new_half, has_changes)
 
       if self.line_numbers:
-        old_half = str(old_num).rjust(4) + ' ' + old_half
-        new_half = str(new_num).rjust(4) + ' ' + new_half
+        old_half = str(old_num).rjust(old_ln_width) + ' ' + old_half
+        new_half = str(new_num).rjust(new_ln_width) + ' ' + new_half
 
-      yield self._format_line(old_half, new_half)
+      yield self._format_line(old_sign + old_half, new_sign + new_half)
 
   def _format_hunk_header(self, hunk):
     old_nums = [old_num for (old_num, _), _, _ in hunk if old_num != '']
@@ -110,14 +112,16 @@ class DiffFormatter(object):
     return re.sub('(?<=\x1b\\[)3(?=[0-7]m\\s+\x1b\\[0m)', '4', line)
 
   def _format_signs(self, old_half, new_half, has_changes):
+    if not self.signs:
+      return '', ''
     if not has_changes:
-      return ' ', ' '
+      return '  ', '  '
     elif not old_half:
-      return ' ', colors.colorize('+', colors.ADD)
+      return '  ', colors.colorize('+ ', colors.ADD)
     elif not new_half:
-      return colors.colorize('-', colors.DELETE), ' '
+      return colors.colorize('- ', colors.DELETE), '  '
     else:
-      return (colors.colorize('!', colors.CHANGE),) * 2
+      return (colors.colorize('! ', colors.CHANGE),) * 2
 
   def _format_line(self, old_half, new_half):
     old_half_lines = self._format_half_lines(old_half)
