@@ -161,7 +161,7 @@ class DiffFormatter(object):
       for part in parts:
         if part.startswith('\x1b'):
           half_lines[-1] += part
-          last_color = part
+          last_color += part
         elif visible_len + len(part) <= self.half_width:
           half_lines[-1] += part
           visible_len += len(part)
