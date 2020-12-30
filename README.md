@@ -5,9 +5,15 @@ Pretty side-by-side diff.
 Inspired by [`ydiff`](https://github.com/ymattw/ydiff) and
 [`icdiff`](https://github.com/jeffkaufman/icdiff).
 
-## Example
+## Examples
 
-![pdiff.png](https://github.com/nkouevda/images/raw/master/pdiff.png)
+Default:
+
+![pdiff-default.png](https://github.com/nkouevda/images/raw/master/pdiff-default.png)
+
+With `--background` and `--line-numbers`:
+
+![pdiff-background-ln.png](https://github.com/nkouevda/images/raw/master/pdiff-background-ln.png)
 
 ## Installation
 
