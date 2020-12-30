@@ -21,7 +21,13 @@ def get_parser():
       metavar='<new file>')
 
   parser.add_argument(
-      '-L',
+      '-b',
+      '--background',
+      action=argparse.BooleanOptionalAction,
+      default=False,
+      help='highlight background instead of foreground')
+  parser.add_argument(
+      '-l',
       '--line-numbers',
       dest='line_numbers',
       action=argparse.BooleanOptionalAction,
@@ -36,7 +42,7 @@ def get_parser():
       help='expand tabs to %(metavar)s spaces (default: %(default)s)',
       metavar='<n>')
   parser.add_argument(
-      '-S',
+      '-s',
       '--signs',
       action=argparse.BooleanOptionalAction,
       default=True,
@@ -55,7 +61,7 @@ def get_parser():
       action='version',
       version='%(prog)s ' + __version__)
   parser.add_argument(
-      '-W',
+      '-w',
       '--width',
       type=int,
       default=terminal_util.get_terminal_size().columns,

@@ -26,16 +26,19 @@ Pretty side-by-side diff
 
 optional arguments:
   -h, --help            show this help message and exit
-  -L, --line-numbers, --no-line-numbers
+  -b, --background, --no-background
+                        highlight background instead of foreground (default: False)
+  -l, --line-numbers, --no-line-numbers
                         show line number columns (default: False)
   -t <n>, --expand-tabs <n>
                         expand tabs to <n> spaces (default: 8)
-  -S, --signs, --no-signs
+  -s, --signs, --no-signs
                         show sign columns (default: True)
   -U <n>, --unified <n>
                         show <n> lines of context (default: 3)
   -v, --version         show program's version number and exit
-  -W <n>, --width <n>   fit output to <n> columns (default: autodetect)
+  -w <n>, --width <n>   fit output to <n> columns (default: autodetect)
+
 ```
 
 ### Git

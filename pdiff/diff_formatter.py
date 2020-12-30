@@ -12,7 +12,16 @@ class DiffFormatter(object):
   OLD_HUNK_HEADER_TEMPLATE = '@@ -%d,%d @@'
   NEW_HUNK_HEADER_TEMPLATE = '@@ +%d,%d @@'
 
-  def __init__(self, old_filename, new_filename, context, width, tab_size, signs, line_numbers):
+  def __init__(
+      self,
+      old_filename,
+      new_filename,
+      context,
+      width,
+      tab_size,
+      signs,
+      line_numbers,
+      background):
     self.old_filename = old_filename
     self.new_filename = new_filename
     self.context = context
@@ -20,10 +29,12 @@ class DiffFormatter(object):
     self.tab_size = tab_size
     self.signs = signs
     self.line_numbers = line_numbers
+    self.background = background
 
     self.half_width = self.width // 2 - 1
     self.empty_half = ' ' * self.half_width
     self.tab_spaces = ' ' * self.tab_size
+    self.marker_to_colors = colors.MARKERS_BG if self.background else colors.MARKERS_FG
 
   def get_lines(self):
     # `readlines` because `difflib._mdiff` can't operate on a generator
@@ -78,13 +89,14 @@ class DiffFormatter(object):
       new_half = new_half.replace('\n', '').replace('\t', self.tab_spaces)
 
       if has_changes:
-        for marker, color in colors.MARKERS.items():
+        for marker, color in self.marker_to_colors.items():
           old_half = old_half.replace(marker, color)
           new_half = new_half.replace(marker, color)
 
-        if old_half and new_half:
-          old_half = self._highlight_whitespace(old_half)
-          new_half = self._highlight_whitespace(new_half)
+        # Use background color for whitespace-only diffs even if no --background
+        if old_half and new_half and not self.background:
+          old_half = self._highlight_whitespace_background(old_half)
+          new_half = self._highlight_whitespace_background(new_half)
 
       old_sign, new_sign = self._format_signs(old_half, new_half, has_changes)
 
@@ -107,7 +119,7 @@ class DiffFormatter(object):
         colors.HUNK_HEADER)
     return self._format_line(old_header, new_header)
 
-  def _highlight_whitespace(self, line):
+  def _highlight_whitespace_background(self, line):
     # For whitespace-only diffs, change `\x1b[30m` to `\x1b[40m` (background)
     return re.sub('(?<=\x1b\\[)3(?=[0-7]m\\s+\x1b\\[0m)', '4', line)
 
@@ -117,11 +129,11 @@ class DiffFormatter(object):
     if not has_changes:
       return '  ', '  '
     elif not old_half:
-      return '  ', colors.colorize('+ ', colors.ADD)
+      return '  ', colors.colorize('+ ', colors.ADD_FG)
     elif not new_half:
-      return colors.colorize('- ', colors.DELETE), '  '
+      return colors.colorize('- ', colors.DELETE_FG), '  '
     else:
-      return (colors.colorize('! ', colors.CHANGE),) * 2
+      return (colors.colorize('! ', colors.CHANGE_FG),) * 2
 
   def _format_line(self, old_half, new_half):
     old_half_lines = self._format_half_lines(old_half)
