@@ -24,7 +24,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'pdiff=pdiff.pdiff:main',
+            'pdiff=pdiff.__main__:main',
         ],
     },
 )
