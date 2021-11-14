@@ -24,14 +24,14 @@ def get_parser():
       '-b',
       '--background',
       action=argparse.BooleanOptionalAction,
-      default=False,
+      default=True,
       help='highlight background instead of foreground')
   parser.add_argument(
       '-l',
       '--line-numbers',
       dest='line_numbers',
       action=argparse.BooleanOptionalAction,
-      default=False,
+      default=True,
       help='show line number columns')
   parser.add_argument(
       '-t',
