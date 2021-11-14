@@ -5,15 +5,9 @@ Pretty side-by-side diff.
 Inspired by [`ydiff`](https://github.com/ymattw/ydiff) and
 [`icdiff`](https://github.com/jeffkaufman/icdiff).
 
-## Examples
+## Example
 
-Default:
-
-![pdiff-default.png](https://github.com/nkouevda/images/raw/master/pdiff-default.png)
-
-With `--background` and `--line-numbers`:
-
-![pdiff-background-ln.png](https://github.com/nkouevda/images/raw/master/pdiff-background-ln.png)
+![pdiff.png](https://github.com/nkouevda/images/raw/master/pdiff.png)
 
 ## Installation
 
@@ -33,9 +27,9 @@ Pretty side-by-side diff
 optional arguments:
   -h, --help            show this help message and exit
   -b, --background, --no-background
-                        highlight background instead of foreground (default: False)
+                        highlight background instead of foreground (default: True)
   -l, --line-numbers, --no-line-numbers
-                        show line number columns (default: False)
+                        show line number columns (default: True)
   -t <n>, --expand-tabs <n>
                         expand tabs to <n> spaces (default: 8)
   -s, --signs, --no-signs
@@ -44,7 +38,6 @@ optional arguments:
                         show <n> lines of context (default: 3)
   -v, --version         show program's version number and exit
   -w <n>, --width <n>   fit output to <n> columns (default: autodetect)
-
 ```
 
 ### Git
