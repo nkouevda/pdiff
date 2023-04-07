@@ -7,7 +7,7 @@ Inspired by [`ydiff`](https://github.com/ymattw/ydiff) and
 
 ## Example
 
-![pdiff.png](https://github.com/nkouevda/images/raw/master/pdiff.png)
+![pdiff.png](https://github.com/nkouevda/images/raw/main/pdiff.png)
 
 ## Installation
 
