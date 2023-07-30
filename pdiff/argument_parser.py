@@ -6,19 +6,19 @@ from . import terminal_util
 
 def get_parser():
   parser = argparse.ArgumentParser(
-      usage='%(prog)s [<options>] [--] <old file> <new file>',
+      usage='%(prog)s [<options>] [--] <left file> <right file>',
       description='Pretty side-by-side diff')
 
   parser.add_argument(
-      'old_filename',
+      'left_filename',
       type=str,
       help=argparse.SUPPRESS,
-      metavar='<old file>')
+      metavar='<left file>')
   parser.add_argument(
-      'new_filename',
+      'right_filename',
       type=str,
       help=argparse.SUPPRESS,
-      metavar='<new file>')
+      metavar='<right file>')
 
   parser.add_argument(
       '-b',

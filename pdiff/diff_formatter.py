@@ -7,23 +7,23 @@ from . import colors
 
 class DiffFormatter(object):
 
-  OLD_HEADER_PREFIX = '--- '
-  NEW_HEADER_PREFIX = '+++ '
-  OLD_HUNK_HEADER_TEMPLATE = '@@ -%d,%d @@'
-  NEW_HUNK_HEADER_TEMPLATE = '@@ +%d,%d @@'
+  LEFT_HEADER_PREFIX = '--- '
+  RIGHT_HEADER_PREFIX = '+++ '
+  LEFT_HUNK_HEADER_TEMPLATE = '@@ -%d,%d @@'
+  RIGHT_HUNK_HEADER_TEMPLATE = '@@ +%d,%d @@'
 
   def __init__(
       self,
-      old_filename,
-      new_filename,
+      left_filename,
+      right_filename,
       context,
       width,
       tab_size,
       signs,
       line_numbers,
       background):
-    self.old_filename = old_filename
-    self.new_filename = new_filename
+    self.left_filename = left_filename
+    self.right_filename = right_filename
     self.context = context
     self.width = width
     self.tab_size = tab_size
@@ -38,33 +38,33 @@ class DiffFormatter(object):
 
   def get_lines(self):
     # `readlines` because `difflib._mdiff` can't operate on a generator
-    with open(self.old_filename, 'r') as old_file:
-      old_lines = old_file.readlines()
-    with open(self.new_filename, 'r') as new_file:
-      new_lines = new_file.readlines()
+    with open(self.left_filename, 'r') as left_file:
+      left_lines = left_file.readlines()
+    with open(self.right_filename, 'r') as right_file:
+      right_lines = right_file.readlines()
 
     yield self._format_file_header()
 
     # Determine line number column widths; note: in some cases this is
     # unnecessarily wide (e.g. if changes only in beginning of a long file)
-    old_ln_width = len(str(len(old_lines)))
-    new_ln_width = len(str(len(new_lines)))
+    left_ln_width = len(str(len(left_lines)))
+    right_ln_width = len(str(len(right_lines)))
 
-    mdiff = difflib._mdiff(old_lines, new_lines, context=self.context)
+    mdiff = difflib._mdiff(left_lines, right_lines, context=self.context)
 
     # `mdiff` context separators don't have the metadata necessary to generate
     # git-diff-like hunk headers (`@@ -%d,%d @@` and `@@ +%d,%d @@`), so we
     # partition `mdiff` into hunks and process each one separately
     for hunk in self._get_hunks(mdiff):
-      for line in self._format_hunk(hunk, old_ln_width, new_ln_width):
+      for line in self._format_hunk(hunk, left_ln_width, right_ln_width):
         yield line
 
   def _format_file_header(self):
-    old_header = colors.colorize(
-        DiffFormatter.OLD_HEADER_PREFIX + self.old_filename, colors.FILE_HEADER)
-    new_header = colors.colorize(
-        DiffFormatter.NEW_HEADER_PREFIX + self.new_filename, colors.FILE_HEADER)
-    return self._format_line(old_header, new_header)
+    left_header = colors.colorize(
+        DiffFormatter.LEFT_HEADER_PREFIX + self.left_filename, colors.FILE_HEADER)
+    right_header = colors.colorize(
+        DiffFormatter.RIGHT_HEADER_PREFIX + self.right_filename, colors.FILE_HEADER)
+    return self._format_line(left_header, right_header)
 
   def _get_hunks(self, mdiff):
     hunk = []
@@ -81,68 +81,68 @@ class DiffFormatter(object):
     if hunk:
       yield hunk
 
-  def _format_hunk(self, hunk, old_ln_width, new_ln_width):
+  def _format_hunk(self, hunk, left_ln_width, right_ln_width):
     yield self._format_hunk_header(hunk)
 
-    for (old_num, old_half), (new_num, new_half), has_changes in hunk:
-      old_half = old_half.replace('\n', '').replace('\t', self.tab_spaces)
-      new_half = new_half.replace('\n', '').replace('\t', self.tab_spaces)
+    for (left_num, left_half), (right_num, right_half), has_changes in hunk:
+      left_half = left_half.replace('\n', '').replace('\t', self.tab_spaces)
+      right_half = right_half.replace('\n', '').replace('\t', self.tab_spaces)
 
       if has_changes:
         for marker, color in self.marker_to_colors.items():
-          old_half = old_half.replace(marker, color)
-          new_half = new_half.replace(marker, color)
+          left_half = left_half.replace(marker, color)
+          right_half = right_half.replace(marker, color)
 
         # Use background color for whitespace-only diffs even if no --background
-        if old_half and new_half and not self.background:
-          old_half = self._highlight_whitespace_background(old_half)
-          new_half = self._highlight_whitespace_background(new_half)
+        if left_half and right_half and not self.background:
+          left_half = self._highlight_whitespace_background(left_half)
+          right_half = self._highlight_whitespace_background(right_half)
 
-      old_sign, new_sign = self._format_signs(old_half, new_half, has_changes)
+      left_sign, right_sign = self._format_signs(left_half, right_half, has_changes)
 
       if self.line_numbers:
-        old_half = str(old_num).rjust(old_ln_width) + ' ' + old_half
-        new_half = str(new_num).rjust(new_ln_width) + ' ' + new_half
+        left_half = str(left_num).rjust(left_ln_width) + ' ' + left_half
+        right_half = str(right_num).rjust(right_ln_width) + ' ' + right_half
 
-      yield self._format_line(old_sign + old_half, new_sign + new_half)
+      yield self._format_line(left_sign + left_half, right_sign + right_half)
 
   def _format_hunk_header(self, hunk):
-    old_nums = [old_num for (old_num, _), _, _ in hunk if old_num != '']
-    new_nums = [new_num for _, (new_num, _), _ in hunk if new_num != '']
-    old_start = old_nums[0] if old_nums else 0
-    new_start = new_nums[0] if new_nums else 0
-    old_header = colors.colorize(
-        DiffFormatter.OLD_HUNK_HEADER_TEMPLATE % (old_start, len(old_nums)),
+    left_nums = [left_num for (left_num, _), _, _ in hunk if left_num != '']
+    right_nums = [right_num for _, (right_num, _), _ in hunk if right_num != '']
+    left_start = left_nums[0] if left_nums else 0
+    right_start = right_nums[0] if right_nums else 0
+    left_header = colors.colorize(
+        DiffFormatter.LEFT_HUNK_HEADER_TEMPLATE % (left_start, len(left_nums)),
         colors.HUNK_HEADER)
-    new_header = colors.colorize(
-        DiffFormatter.NEW_HUNK_HEADER_TEMPLATE % (new_start, len(new_nums)),
+    right_header = colors.colorize(
+        DiffFormatter.RIGHT_HUNK_HEADER_TEMPLATE % (right_start, len(right_nums)),
         colors.HUNK_HEADER)
-    return self._format_line(old_header, new_header)
+    return self._format_line(left_header, right_header)
 
   def _highlight_whitespace_background(self, line):
     # For whitespace-only diffs, change `\x1b[30m` to `\x1b[40m` (background)
     return re.sub('(?<=\x1b\\[)3(?=[0-7]m\\s+\x1b\\[0m)', '4', line)
 
-  def _format_signs(self, old_half, new_half, has_changes):
+  def _format_signs(self, left_half, right_half, has_changes):
     if not self.signs:
       return '', ''
     if not has_changes:
       return '  ', '  '
-    elif not old_half:
+    elif not left_half:
       return '  ', colors.colorize('+ ', colors.ADD_FG)
-    elif not new_half:
+    elif not right_half:
       return colors.colorize('- ', colors.DELETE_FG), '  '
     else:
       return (colors.colorize('! ', colors.CHANGE_FG),) * 2
 
-  def _format_line(self, old_half, new_half):
-    old_half_lines = self._format_half_lines(old_half)
-    new_half_lines = self._format_half_lines(new_half)
+  def _format_line(self, left_half, right_half):
+    left_half_lines = self._format_half_lines(left_half)
+    right_half_lines = self._format_half_lines(right_half)
 
     return '\n'.join(
-        old_half + ' ' + new_half
-        for old_half, new_half in itertools.zip_longest(
-            old_half_lines, new_half_lines, fillvalue=self.empty_half)) + '\n'
+        left_half + ' ' + right_half
+        for left_half, right_half in itertools.zip_longest(
+            left_half_lines, right_half_lines, fillvalue=self.empty_half)) + '\n'
 
   def _format_half_lines(self, half_line):
     # Split `'ab\x1b[31mcd\x1b[0m'` into `['ab', '\x1b[31m', 'cd', '\x1b[0m']`

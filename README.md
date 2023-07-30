@@ -20,7 +20,7 @@ Or:
 ## Usage
 
 ```
-usage: pdiff [<options>] [--] <old file> <new file>
+usage: pdiff [<options>] [--] <left file> <right file>
 
 Pretty side-by-side diff
 
