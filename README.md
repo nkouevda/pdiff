@@ -46,7 +46,7 @@ Configure a `pdiff` `difftool`, and add some aliases to your liking, e.g.:
 
 ```
 [difftool "pdiff"]
-	cmd = "pdiff -- \"$LOCAL\" \"$REMOTE\" | less --Raw-control-chars"
+	cmd = "pdiff -- \"$LOCAL\" \"$REMOTE\" | less --Raw-control-chars --quit-on-intr"
 
 [alias]
 	dfp = difftool --tool=pdiff
