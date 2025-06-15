@@ -13,19 +13,19 @@ DELETE_BG = colorama.Fore.BLACK + colorama.Back.RED
 CHANGE_BG = colorama.Fore.BLACK + colorama.Back.YELLOW
 
 MARKERS_FG = {
-    '\x00+': ADD_FG,
-    '\x00-': DELETE_FG,
-    '\x00^': CHANGE_FG,
-    '\x01': RESET,
+    "\x00+": ADD_FG,
+    "\x00-": DELETE_FG,
+    "\x00^": CHANGE_FG,
+    "\x01": RESET,
 }
 
 MARKERS_BG = {
-    '\x00+': ADD_BG,
-    '\x00-': DELETE_BG,
-    '\x00^': CHANGE_BG,
-    '\x01': RESET,
+    "\x00+": ADD_BG,
+    "\x00-": DELETE_BG,
+    "\x00^": CHANGE_BG,
+    "\x01": RESET,
 }
 
 
 def colorize(text, color):
-  return color + text + RESET
+    return color + text + RESET
