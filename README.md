@@ -24,20 +24,19 @@ usage: pdiff [<options>] [--] <left file> <right file>
 
 Pretty side-by-side diff
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   -b, --background, --no-background
                         highlight background instead of foreground (default: True)
   -l, --line-numbers, --no-line-numbers
                         show line number columns (default: True)
-  -t <n>, --expand-tabs <n>
+  -t, --expand-tabs <n>
                         expand tabs to <n> spaces (default: 8)
   -s, --signs, --no-signs
                         show sign columns (default: True)
-  -U <n>, --unified <n>
-                        show <n> lines of context (default: 3)
+  -U, --unified <n>     show <n> lines of context (default: 3)
   -v, --version         show program's version number and exit
-  -w <n>, --width <n>   fit output to <n> columns (default: autodetect)
+  -w, --width <n>       fit output to <n> columns (default: autodetect)
 ```
 
 ### Git

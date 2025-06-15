@@ -6,8 +6,10 @@ from . import terminal_util
 
 def get_parser():
     parser = argparse.ArgumentParser(
+        prog="pdiff",
         usage="%(prog)s [<options>] [--] <left file> <right file>",
         description="Pretty side-by-side diff",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
     parser.add_argument(
@@ -44,7 +46,7 @@ def get_parser():
         dest="tab_size",
         type=int,
         default=8,
-        help="expand tabs to %(metavar)s spaces (default: %(default)s)",
+        help="expand tabs to %(metavar)s spaces",
         metavar="<n>",
     )
     parser.add_argument(
@@ -60,7 +62,7 @@ def get_parser():
         dest="context",
         type=int,
         default=3,
-        help="show %(metavar)s lines of context (default: %(default)s)",
+        help="show %(metavar)s lines of context",
         metavar="<n>",
     )
     parser.add_argument(
@@ -74,7 +76,7 @@ def get_parser():
         "--width",
         type=int,
         default=terminal_util.get_terminal_size().columns,
-        help="fit output to %(metavar)s columns (default: autodetect)",
+        help="fit output to %(metavar)s columns",
         metavar="<n>",
     )
 
