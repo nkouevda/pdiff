@@ -13,7 +13,7 @@ def get_terminal_size():
     for fd in range(3):
         try:
             return terminal_size_fn(fd)
-        except Exception:
+        except Exception:  # noqa: BLE001, S110
             pass
 
     return terminal_size(columns=80, lines=24)

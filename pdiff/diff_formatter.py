@@ -5,7 +5,7 @@ import re
 from . import colors
 
 
-class DiffFormatter(object):
+class DiffFormatter:
     LEFT_HEADER_PREFIX = "--- "
     RIGHT_HEADER_PREFIX = "+++ "
     LEFT_HUNK_HEADER_TEMPLATE = "@@ -%d,%d @@"
@@ -56,8 +56,7 @@ class DiffFormatter(object):
         # git-diff-like hunk headers (`@@ -%d,%d @@` and `@@ +%d,%d @@`), so we
         # partition `mdiff` into hunks and process each one separately
         for hunk in self._get_hunks(mdiff):
-            for line in self._format_hunk(hunk, left_ln_width, right_ln_width):
-                yield line
+            yield from self._format_hunk(hunk, left_ln_width, right_ln_width)
 
     def _format_file_header(self):
         left_header = colors.colorize(

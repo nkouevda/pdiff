@@ -11,10 +11,10 @@ def main():
 
     for filename in (args.left_filename, args.right_filename):
         if not os.path.exists(filename):
-            sys.stderr.write("error: file does not exist: %s\n" % filename)
+            sys.stderr.write(f"error: file does not exist: {filename}\n")
             return 1
         elif os.path.isdir(filename):
-            sys.stderr.write("error: path is a directory: %s\n" % filename)
+            sys.stderr.write(f"error: path is a directory: {filename}\n")
             return 1
 
     formatter = diff_formatter.DiffFormatter(
